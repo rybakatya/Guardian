@@ -1,9 +1,32 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+<h1>How to use this tool</h1>
+
+<p class="text">Fill out the form as you complete the call reading all <span style="color:whitesmoke">white</span> text directly to the caller.</p>
+
+<p class="text">The <span class="toolText">red</span> text is information you will obtain using omni or other tools.</p>
+<p class="text">The <span class="memberText">yellow</span> text is informatioon you will obtain from the caller.</p>
+<p class="text">The <span class="taskText">purple</span> text is an action you must perform before ending this call.</p>
+<p class="text">You can activate speech to text by holding down the Voice Input button.</p>
+<p class="text">Pressing copy notes will auto format and copy your notes to your clipboard in the correct format.</p>
+<p class="text">The very top section of your wrap notes will need some input. Caller Name, interaction id, and callback number will need to be manually entered after pasting your notes into omni.</p>
+<p class="text">Pressing generate summary will auto generate a summary script with correct branding.</p>
+<button @click="goToAbout">Continue</button>
 </template>
+
+
+<style scoped>
+h1 {
+  margin-left:3px;
+}
+</style>
+
+<script setup lang="ts">
+import MainPage from "../components/MainPage.vue";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToAbout = () => {
+  router.push('/frontline');
+};
+</script>
