@@ -41,6 +41,7 @@ const builtRapportWithMember = ref(false);
 const checkedAlerts = ref(false);
 const gapsInCare = ref(false);
 const ihha = ref(false);
+const portal = ref(false);
 const offeredMemberAdditionalAssistance = ref(false);
 
 const callReason = ref("");
@@ -310,30 +311,37 @@ const copyNotes = () => {
     notes += "\nAction: " + callAction.value;
 
     
-    if(offeredAgentAdditionAssistance.value == true)
-      callResolution.value += "\nAgent understood and had no further questions.";
+    
 
-    if(confirmUnderstanding.value == true)
-      callResolution.value += "\nCaller understood and had no further questions."
+    
 
     notes += "\nResolution: " + callResolution.value;
+    if(offeredAgentAdditionAssistance.value == true)
+      notes += "\nAgent understood and had no further questions.";
+
+    if(confirmUnderstanding.value == true)
+      notes += "\nCaller understood and had no further questions."
   }
   else if(agentType.value == AgentType.FrontLine)
   {
     notes += "Caller Name: ";
-    notes += "InteractionID: ";
-    notes +="\nHIPAA Verified: " + (verifiedHippa.value == 0) ? "Yes" : "No";
+    notes += "\nInteractionID: ";
+    notes +="\nHIPAA Verified: ";
+    notes += + (verifiedHippa.value == 0) ? "Yes" : "No";
     notes += "\nReason for Call: " + callReason.value;
     notes += "\nAction: " + callAction.value;
 
 
-    if(offeredMemberAdditionalAssistance.value == true)
-      callResolution.value += "\nCaller understood and had no further questions."
+    
 
     notes += "\nResolution: " + callResolution.value;
+
+    if(offeredMemberAdditionalAssistance.value == true)
+      notes += "\nCaller understood and had no further questions."
   }
   console.log(notes);
   navigator.clipboard.writeText(notes);
+
 }
 
 
@@ -491,7 +499,17 @@ function searchCentralPoint() {
 <ConfirmedText 
   v-if="greetedMember == true && verifiedHippa != -1 && offeredAssistanceToMember == true && probedMember == true 
     && willingnessMember == true && firstTimeCalling == true && shownEmpathyToMember == true && builtRapportWithMember == true
-    && checkedAlerts == true && gapsInCare && ihha == true"
+    && checkedAlerts == true && gapsInCare == true && ihha == true"
+  v-model="portal"
+  styleClass="text"
+  labelClass="memberText"
+  label="SSO"
+  question="Just so you're aware we have self service options at our website where you can print new id cards incase they're lost, view in network providers, or check the status of any authorizations."
+/>
+<ConfirmedText 
+  v-if="greetedMember == true && verifiedHippa != -1 && offeredAssistanceToMember == true && probedMember == true 
+    && willingnessMember == true && firstTimeCalling == true && shownEmpathyToMember == true && builtRapportWithMember == true
+    && checkedAlerts == true && gapsInCare && ihha == true && portal == true"
   v-model="offeredMemberAdditionalAssistance"
   styleClass="text"
   labelClass="memberText"
@@ -499,7 +517,16 @@ function searchCentralPoint() {
   question="Is there anything else I can assist you with today?"
 />
 
-
+<ConfirmedText 
+  v-if="greetedMember == true && verifiedHippa != -1 && offeredAssistanceToMember == true && probedMember == true 
+    && willingnessMember == true && firstTimeCalling == true && shownEmpathyToMember == true && builtRapportWithMember == true
+    && checkedAlerts == true && gapsInCare && ihha == true && portal == true && offeredMemberAdditionalAssistance == true"
+  
+  styleClass="text"
+  labelClass="memberText"
+  label="Close"
+  :question="`Just so you're aware there will be a brief survey at the end of this call. If you feel my service deserves 5 stars please press 5 for very satisfied. Thank you for calling ${brandName}, have a great day and bye for now.`"
+/>
 
 
 
@@ -658,12 +685,34 @@ function searchCentralPoint() {
   <ConfirmedText
     v-if="greetedAgent == true && (obtainedMemberIDFromAgent == true || accountPopulated == 0) && confirmMemberName == true && 
       hippaIdentifiersObtained == true && offeredAssistanceToAgent == true && willingnessAgent == true && probedAgent == true
+      && firstTimeCalling == true && checkNotes == true && offerInteractionID == true && callSupportType == EscalationType.Support && offeredAgentAdditionAssistance"
+    v-model="agentFarewell"
+    styleClass="text"
+    labelClass="memberText"
+    label="Close"
+    :question="`Well in that case thank you for calling the members escalation team. Have a great day and bye for now.`"
+  />
+
+  <ConfirmedText
+    v-if="greetedAgent == true && (obtainedMemberIDFromAgent == true || accountPopulated == 0) && confirmMemberName == true && 
+      hippaIdentifiersObtained == true && offeredAssistanceToAgent == true && willingnessAgent == true && probedAgent == true
       && firstTimeCalling == true && checkNotes == true && offerInteractionID == true && callSupportType != EscalationType.Support"
     v-model="offeredAgentAdditionAssistance"
     styleClass="text"
     labelClass="memberText"
     label="Additional Assistance"
     :question="`Before I take over this call is there anything else I can assist you with today?`"
+  />
+
+  <ConfirmedText
+    v-if="greetedAgent == true && (obtainedMemberIDFromAgent == true || accountPopulated == 0) && confirmMemberName == true && 
+      hippaIdentifiersObtained == true && offeredAssistanceToAgent == true && willingnessAgent == true && probedAgent == true
+      && firstTimeCalling == true && checkNotes == true && offerInteractionID == true && callSupportType != EscalationType.Support"
+    v-model="agentFarewell"
+    styleClass="text"
+    labelClass="memberText"
+    label="Close"
+    :question="`Well in that case thank you for calling the members escalation team, you may now connect the member.`"
   />
 
   <ConfirmedText
@@ -764,7 +813,19 @@ function searchCentralPoint() {
   label="Additional Assistance"
   question="Is there anything else I can assist you with today?"
 />
-
+  
+<ConfirmedText 
+  v-if="greetedAgent == true && (obtainedMemberIDFromAgent == true || accountPopulated == 0) && confirmMemberName == true && 
+      hippaIdentifiersObtained == true && offeredAssistanceToAgent == true && willingnessAgent == true && probedAgent == true
+      && firstTimeCalling == true && checkNotes == true && offerInteractionID == true && offeredAgentAdditionAssistance == true &&
+      callSupportType != EscalationType.Support && greetedMember && probedMember && willingnessMember && shownEmpathyToMember &&
+      builtRapportWithMember && confirmUnderstanding"
+  v-model="offeredMemberAdditionalAssistance"
+  styleClass="text"
+  labelClass="memberText"
+  label="Survey"
+  :question="`Well in that case I do want to let you know there will be a brief survey at the end of the call. If you feel like my service deserves 5 stars please press 5 for very satisfied. Thank you for calling ${brandName}`"
+/>
   <Dropdown
     label-style="memberText"
     :options="escalationOptions"
@@ -805,13 +866,14 @@ function searchCentralPoint() {
 </p>  
 
 <TextAreaInput 
-  v-model="callReason" label="Call Reason: " />
+  v-model:text="callReason" label="Call Reason: " />
 
 <TextAreaInput 
-  v-model="callAction" label="Call Action: " />
+  v-model:text="callAction" label="Call Action: " />
 
 <TextAreaInput 
-  v-model="callResolution" label="Call Resolution: " />
+  v-model:text="callResolution" label="Call Resolution: " />
+
 
 
 <button @click="copyNotes">Copy Notes</button>

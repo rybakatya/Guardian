@@ -19,9 +19,9 @@ import { defineProps, defineEmits } from 'vue';
 const props = defineProps<{
   styleClass?: string;
   labelClass?: string;
-  label: string;
-  question: string;
-  modelValue: boolean;
+  label?: string;
+  question?: string;
+  modelValue?: boolean;
 }>();
 
 const emit = defineEmits<{

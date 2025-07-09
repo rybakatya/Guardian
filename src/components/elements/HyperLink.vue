@@ -2,6 +2,7 @@
   <a class="hyp-link" href="#" @click.prevent="openPopup(target)">
     {{ content }}
   </a>
+  <br/>
 </template>
 
 <script setup lang="ts">
