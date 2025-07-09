@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AgentType } from "./AgentType.ts"
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { AvailableStates } from './State.ts'; // Adjust path as needed
 import ConfirmedText from "./ConfirmedText.vue";
 import YesOrNoChoiceBubble from "./YesOrNoChoiceBubble.vue";
@@ -195,7 +195,10 @@ const navItems: NavBarItem[] = [
   ]
   },
   {
-    display: "Switch",
+    display: computed(() => {
+        return (agentType.value == AgentType.FrontLine) ? "MET" : "Frontline"
+      
+    }),
     action: () => 
     ( 
       agentType.value = (agentType.value == AgentType.MET) ? AgentType.FrontLine : AgentType.MET,

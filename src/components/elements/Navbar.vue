@@ -53,10 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, reactive } from 'vue'
+import { defineProps, reactive, type ComputedRef } from 'vue'
 
 export interface NavBarItem {
-  display: string
+  display: string | ComputedRef<string>
   action: () => void
   children?: NavBarItem[]
   open?: boolean
@@ -76,7 +76,7 @@ function close(item: NavBarItem) {
 
 <style scoped>
 .navbar {
-  background-color: #2c3e50;
+  background-color: #151B23;
   padding: 0 1rem;
   user-select: none;
 }
@@ -112,7 +112,8 @@ function close(item: NavBarItem) {
   position: absolute;
   top: 100%;
   left: 0;
-  background: #34495e;
+  background-color: #151B23;
+
   list-style: none;
   padding: 0;
   margin: 0;
@@ -120,6 +121,7 @@ function close(item: NavBarItem) {
   min-width: 150px;
   display: none;
   z-index: 999;
+  cursor:pointer;
 }
 
 .dropdown.open {
@@ -137,7 +139,9 @@ function close(item: NavBarItem) {
   color: #ecf0f1;
   white-space: nowrap;
 }
-
+.nav-item:hover {
+  background-color: #3d566e;
+}
 .dropdown-link:hover {
   background-color: #3d566e;
 }
@@ -146,7 +150,7 @@ function close(item: NavBarItem) {
 .dropdown.sub {
   top: 0;
   left: 100%;
-  background-color: #3b5163;
+  background-color: #151B23;
   border-radius: 0 4px 4px 0;
   margin: 0; /* prevent gap */
 }
